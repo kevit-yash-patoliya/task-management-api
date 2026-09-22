@@ -2,6 +2,9 @@ import express, {type  Request,type  Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import appRoutes from './modules/route.js';
+import { specs, swaggerUi } from './swagger.js';
+import connectDB from './config/db.js';
 
 // Load environments
 dotenv.config();
@@ -9,12 +12,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydatabase';
-
+const DB_NAME = process.env.DB_NAME || 'mydatabase';
 // Middleware
 app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true})); 
 
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Health Check
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Server is running smoothly!' });
@@ -22,12 +27,12 @@ app.get('/', (req: Request, res: Response) => {
 
 
 // routes 
+app.use("/api",appRoutes)
 
 
 
 // Connect to MongoDB and Start Server
-mongoose
-  .connect(MONGO_URI)
+connectDB(MONGO_URI,DB_NAME)
   .then(() => {
     console.log('Successfully connected to MongoDB.');
     app.listen(PORT, () => {

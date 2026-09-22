@@ -1,17 +1,15 @@
-import express from "express";
+import { Router } from "express";
 import { body } from "express-validator";
+import { Priority } from "@/utils/enums/tasks.priority.js";
+import { TaskStatus } from "@/utils/enums/tasks.status.js";
 import {
   assignTask,
   createTask,
   getTasks,
   updateTaskStatus,
 } from "./tasks.controller.js";
-import { TaskStatus } from "@/utils/enums/tasks.status.js";
-import { Priority } from "@/utils/enums/tasks.priority.js";
 
-const router = express.Router();
-
-
+const router = Router();
 /**
  * @swagger
  * /api/tasks:
@@ -36,7 +34,6 @@ const router = express.Router();
  */
 
 router.get("/", getTasks);
-
 
 /**
  * @swagger
@@ -72,7 +69,7 @@ router.get("/", getTasks);
  *                 example: 1
  *               createdBy:
  *                 type: string
- *                 example: 1  
+ *                 example: 1
  */
 router.post(
   "/create-task",
@@ -92,7 +89,6 @@ router.post(
   body("createdBy").isString(),
   createTask,
 );
-
 
 /**
  * @swagger
