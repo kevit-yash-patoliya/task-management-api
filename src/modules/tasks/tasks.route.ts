@@ -10,27 +10,107 @@ import {
 } from "./tasks.controller.js";
 
 const router = Router();
+
 /**
  * @swagger
  * /api/tasks:
  *   get:
  *     summary: Retrieve a list of tasks
+ *     description: Returns a list of tasks based on the query parameters.
+ *     parameters:
+ *       - name: limit
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *       - name: page
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *       - name: status
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: ["TODO", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
+ *           example: TODO
+ *       - name: priority
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: ["LOW", "MEDIUM", "HIGH"]
+ *           example: MEDIUM
+ *       - name: createdBy
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: assignedTo
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: A list of tasks
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: John Doe
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: tasks fetched successfully
+ *                 paginatedResponse:
+ *                   type: object
+ *                   properties:
+ *                     tasks:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                             example: 1
+ *                           title:
+ *                             type: string
+ *                             example: Task 1
+ *                           description:
+ *                             type: string
+ *                             example: Task 1 description
+ *                           priority:
+ *                             type: string
+ *                             enum: ["LOW", "MEDIUM", "HIGH"]
+ *                             example: MEDIUM
+ *                           status:
+ *                             type: string
+ *                             enum: ["TODO", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
+ *                             example: TODO
+ *                           dueDate:
+ *                             type: string
+ *                             example: 2022-01-01
+ *                           assignedTo:
+ *                             type: string
+ *                             example: 1
+ *                           createdBy:
+ *                             type: string
+ *                             example: 1
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 1
+ *                     hasNextPage:
+ *                       type: boolean
+ *                       example: true
+ *                     hasPrevPage:
+ *                       type: boolean
+ *                       example: false
  */
 
 router.get("/", getTasks);

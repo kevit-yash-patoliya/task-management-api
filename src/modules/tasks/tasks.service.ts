@@ -60,5 +60,9 @@ export async function getTasksService({limit,page,status,priority,createdBy,assi
     const defaultLimit = Number(limit) || 10;
     const defaultPage = Number(page) || 1;
     const tasks = await TaskModel.find(query).sort({createdAt: -1}).skip(Number(defaultLimit)*(Number(defaultPage)-1)).limit(Number(defaultLimit));
-    return tasks;
+    const totalTasks = await TaskModel.countDocuments(query);
+    const totalPages = Math.ceil(totalTasks / defaultLimit);
+    const hasNextPage = defaultPage < totalPages;
+    const hasPrevPage = defaultPage > 1;
+    return {tasks,totalPages,hasNextPage,hasPrevPage};
 }

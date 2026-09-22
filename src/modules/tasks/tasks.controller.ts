@@ -65,15 +65,11 @@ export async function updateTaskStatus(req: Request, res: Response) {
 
 export async function getTasks(req: Request, res: Response) {
   try {
-    const tasks = await getTasksService(req.query as IGetTasks);
-    if (!tasks) {
-      return res
-        .status(404)
-        .json({ success: false, message: "tasks not found" });
-    }
+    const paginatedResponse = await getTasksService(req.query as IGetTasks);
+    
     return res
       .status(200)
-      .json({ success: true, message: "tasks fetched successfully", tasks });
+      .json({ success: true, message: "tasks fetched successfully", paginatedResponse });
   } catch (error) {
     return res
       .status(500)
