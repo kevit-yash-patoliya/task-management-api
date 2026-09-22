@@ -5,6 +5,8 @@ import cors from 'cors';
 import appRoutes from './modules/route.js';
 import { specs, swaggerUi } from './swagger.js';
 import connectDB from './config/db.js';
+import logger from './utils/logger.js';
+import { requestLogger } from './middleware/request.logger.js';
 
 // Load environments
 dotenv.config();
@@ -17,6 +19,7 @@ const DB_NAME = process.env.DB_NAME || 'mydatabase';
 app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true})); 
+app.use(requestLogger);
 
 
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
@@ -34,12 +37,12 @@ app.use("/api",appRoutes)
 // Connect to MongoDB and Start Server
 connectDB(MONGO_URI,DB_NAME)
   .then(() => {
-    console.log('Successfully connected to MongoDB.');
+    logger.info('Successfully connected to MongoDB.');
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      logger.info(`Server is running on http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
-    console.error('Database connection failed:', error);
+    logger.error('Database connection failed:', error);
     process.exit(1);
   });

@@ -117,9 +117,9 @@ router.get("/", getTasks);
 
 /**
  * @swagger
- * /api/tasks/create:
+ * /api/tasks/create-task:
  *   post:
- *     summary: Retrieve a list of tasks
+ *     summary: Create a new task
  *     requestBody:
  *       required: true
  *       content:
@@ -150,6 +150,24 @@ router.get("/", getTasks);
  *               createdBy:
  *                 type: string
  *                 example: 1
+ *     responses:
+ *       201:
+ *         description: Task created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: task created successfully
+ *                 task:
+ *                   type: object
+ *       500:
+ *         description: Internal server error
  */
 router.post(
   "/create-task",
@@ -188,6 +206,26 @@ router.post(
  *               id:
  *                 type: string
  *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Task assigned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: task assigned successfully
+ *                 task:
+ *                   type: object
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 router.post(
   "/assign-task",
@@ -215,6 +253,26 @@ router.post(
  *                 type: string
  *                 enum: ["TODO", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
  *                 example: TODO
+ *     responses:
+ *       200:
+ *         description: Task status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: task updated successfully
+ *                 task:
+ *                   type: object
+ *       404:
+ *         description: Task not found
+ *       500:
+ *         description: Internal server error
  */
 router.patch(
   "/update-task-status",
