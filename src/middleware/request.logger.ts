@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import logger from '../utils/logger.js';
+import { Request, Response, NextFunction } from "express";
+import logger from "../utils/logger.js";
 
 export function requestLogger(req: Request, res: Response, next: NextFunction) {
   const start = Date.now();
 
-  res.on('finish', () => {
+  res.on("finish", () => {
     const duration = Date.now() - start;
     const logData = {
       method: req.method,
@@ -14,9 +14,9 @@ export function requestLogger(req: Request, res: Response, next: NextFunction) {
     };
 
     if (res.statusCode >= 400) {
-      logger.warn('Request completed with error', logData);
+      logger.warn("Request completed with error", logData);
     } else {
-      logger.info('Request completed', logData);
+      logger.info("Request completed", logData);
     }
   });
 

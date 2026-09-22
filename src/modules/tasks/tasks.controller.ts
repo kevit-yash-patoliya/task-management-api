@@ -5,7 +5,7 @@ import {
   assignTaskService,
   updateTaskStatusService,
   getTasksService,
-  type IGetTasks
+  type IGetTasks,
 } from "./tasks.service.js";
 
 export async function createTask(req: Request, res: Response) {
@@ -66,10 +66,12 @@ export async function updateTaskStatus(req: Request, res: Response) {
 export async function getTasks(req: Request, res: Response) {
   try {
     const paginatedResponse = await getTasksService(req.query as IGetTasks);
-    
-    return res
-      .status(200)
-      .json({ success: true, message: "tasks fetched successfully", paginatedResponse });
+
+    return res.status(200).json({
+      success: true,
+      message: "tasks fetched successfully",
+      paginatedResponse,
+    });
   } catch (error) {
     return res
       .status(500)

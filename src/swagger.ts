@@ -1,13 +1,14 @@
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 const options: swaggerJsdoc.Options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'My Express TypeScript API',
-      version: '1.0.0',
-      description: 'A simple Express API documented with Swagger and TypeScript',
+      title: "My Express TypeScript API",
+      version: "1.0.0",
+      description:
+        "A simple Express API documented with Swagger and TypeScript",
     },
     servers: [
       {
@@ -15,7 +16,7 @@ const options: swaggerJsdoc.Options = {
       },
     ],
   },
-  apis: ['./src/modules/**/*.ts', './src/index.ts','./src/modules/**/*.ts'], 
+  apis: ["./src/modules/**/*.ts", "./src/index.ts", "./src/modules/**/*.ts"],
 };
 
 const specs = swaggerJsdoc(options);

@@ -20,15 +20,14 @@ const schema = new Schema(
 );
 
 export interface ITask {
-  id:Types.ObjectId,
-  title:string,
-  description:string,
-  status:TaskStatus,
-  priority:Priority,
-  createdBy:Types.ObjectId,
-  assignedTo:Types.ObjectId,
-  dueDate:Date
+  id: Types.ObjectId;
+  title: string;
+  description: string;
+  status: TaskStatus;
+  priority: Priority;
+  createdBy: Types.ObjectId;
+  assignedTo: Types.ObjectId;
+  dueDate: Date;
 }
 
 export const TaskModel = model("Task", schema);
-

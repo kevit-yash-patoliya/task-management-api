@@ -1,51 +1,51 @@
 export default class HttpException extends Error {
-	statusCode: number;
+  statusCode: number;
 
-	errorType: string;
+  errorType: string;
 
-	errorCode: string;
+  errorCode: string;
 
-	message: string;
+  message: string;
 
-	originalError: unknown;
+  originalError: unknown;
 
-	meta: string | null;
+  meta: string | null;
 
-	constructor(
-		statusCode: number,
-		message: string,
-		errorCode: string,
-		err: unknown | string,
-		meta = null,
-	) {
-		super(message);
-		this.statusCode = statusCode;
-		this.errorType = getErrorFromCode(statusCode);
-		this.errorCode = errorCode;
-		this.message = message;
-		this.originalError = err;
-		this.meta = meta;
-	}
+  constructor(
+    statusCode: number,
+    message: string,
+    errorCode: string,
+    err: unknown | string,
+    meta = null,
+  ) {
+    super(message);
+    this.statusCode = statusCode;
+    this.errorType = getErrorFromCode(statusCode);
+    this.errorCode = errorCode;
+    this.message = message;
+    this.originalError = err;
+    this.meta = meta;
+  }
 }
 
 function getErrorFromCode(statusCode: number | string) {
-	switch (statusCode) {
-		case 500: {
-			return 'INTERNAL_SERVER_ERROR';
-		}
-		case 400: {
-			return 'BAD_REQUEST';
-		}
-		case 401: {
-			return 'UNAUTHORIZED';
-		}
-		case 424: {
-			return 'FAILED_DEPENDENCY';
-		}
-		case 404: {
-			return 'NOT_FOUND';
-		}
-		default:
-			return 'UNHANDLED_ERROR';
-	}
+  switch (statusCode) {
+    case 500: {
+      return "INTERNAL_SERVER_ERROR";
+    }
+    case 400: {
+      return "BAD_REQUEST";
+    }
+    case 401: {
+      return "UNAUTHORIZED";
+    }
+    case 424: {
+      return "FAILED_DEPENDENCY";
+    }
+    case 404: {
+      return "NOT_FOUND";
+    }
+    default:
+      return "UNHANDLED_ERROR";
+  }
 }
