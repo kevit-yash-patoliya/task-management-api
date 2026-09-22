@@ -1,6 +1,13 @@
 import { ITask, TaskModel } from "./schema/task.schema.js";
 
-
+export interface IGetTasks {
+    limit?: number;
+    page?: number;
+    status?: string;
+    priority?: string;
+    createdBy?: string;
+    assignedTo?: string;
+}
 
 export async function findTaskService(id:string){
     const task = await TaskModel.findById(id);
@@ -35,7 +42,23 @@ export async function updateTaskStatusService(data:ITask){
     await task.save()
     return task;
 }
-export async function getTasksService(){
-    const tasks = await TaskModel.find({});
+export async function getTasksService({limit,page,status,priority,createdBy,assignedTo}:IGetTasks){
+    const query:any={};
+    if(status){
+        query.status=status;
+    }
+    if(priority){
+        query.priority=priority;
+    }
+    if(createdBy){
+        query.createdBy=createdBy;
+    }
+    if(assignedTo){
+        query.assignedTo=assignedTo;
+    }
+
+    const defaultLimit = Number(limit) || 10;
+    const defaultPage = Number(page) || 1;
+    const tasks = await TaskModel.find(query).sort({createdAt: -1}).skip(Number(defaultLimit)*(Number(defaultPage)-1)).limit(Number(defaultLimit));
     return tasks;
 }

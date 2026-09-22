@@ -5,6 +5,7 @@ import {
   assignTaskService,
   updateTaskStatusService,
   getTasksService,
+  type IGetTasks
 } from "./tasks.service.js";
 
 export async function createTask(req: Request, res: Response) {
@@ -64,7 +65,7 @@ export async function updateTaskStatus(req: Request, res: Response) {
 
 export async function getTasks(req: Request, res: Response) {
   try {
-    const tasks = await getTasksService();
+    const tasks = await getTasksService(req.query as IGetTasks);
     if (!tasks) {
       return res
         .status(404)
