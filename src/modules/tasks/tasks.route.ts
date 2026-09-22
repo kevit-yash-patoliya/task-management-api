@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 import { Priority } from "@/utils/enums/tasks.priority.js";
 import { TaskStatus } from "@/utils/enums/tasks.status.js";
 import {
@@ -36,14 +36,12 @@ const router = Router();
  *         schema:
  *           type: string
  *           enum: ["TODO", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
- *           example: TODO
  *       - name: priority
  *         in: query
  *         required: false
  *         schema:
  *           type: string
  *           enum: ["LOW", "MEDIUM", "HIGH"]
- *           example: MEDIUM
  *       - name: createdBy
  *         in: query
  *         required: false
@@ -113,7 +111,25 @@ const router = Router();
  *                       example: false
  */
 
-router.get("/", getTasks);
+router.get(
+  "/",
+  query("limit").isNumeric().optional(),
+  query("page").isNumeric().optional(),
+  query("status")
+    .isIn([
+      TaskStatus.TODO,
+      TaskStatus.IN_PROGRESS,
+      TaskStatus.COMPLETED,
+      TaskStatus.CANCELLED,
+    ])
+    .optional(),
+  query("priority")
+    .isIn([Priority.LOW, Priority.MEDIUM, Priority.HIGH])
+    .optional(),
+  query("createdBy").isString().optional(),
+  query("assignedTo").isString().optional(),
+  getTasks,
+);
 
 /**
  * @swagger
