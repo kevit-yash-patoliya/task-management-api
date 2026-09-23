@@ -7,6 +7,7 @@ import { specs, swaggerUi } from "./swagger.js";
 import connectDB from "./config/db.js";
 import logger from "./utils/logger.js";
 import { requestLogger } from "./middleware/request.logger.js";
+import { globalErrorHandler } from "./middleware/error.handler.js";
 
 // Load environments
 dotenv.config();
@@ -30,6 +31,9 @@ app.get("/", (req: Request, res: Response) => {
 
 // routes
 app.use("/api", appRoutes);
+
+// Global Error Handler
+app.use(globalErrorHandler);
 
 // Connect to MongoDB and Start Server
 connectDB(MONGO_URI, DB_NAME)
