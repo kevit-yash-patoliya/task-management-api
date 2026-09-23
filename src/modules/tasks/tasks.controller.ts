@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { ApiError } from "../../utils/api.error.js";
 import { findById } from "../users/users.service.js";
 import {
   createTaskService,
@@ -11,9 +12,7 @@ import {
 export async function createTask(req: Request, res: Response) {
   const task = await createTaskService(req.body);
   if (!task) {
-    return res
-      .status(404)
-      .json({ success: false, message: "task creation failed" });
+    throw ApiError.badRequest("task creation failed");
   }
   return res
     .status(201)
@@ -23,9 +22,7 @@ export async function assignTask(req: Request, res: Response) {
   const data = req.body;
   const user = await findById(data.assignedTo);
   if (!user) {
-    return res
-      .status(404)
-      .json({ success: false, message: "user not found" });
+    throw ApiError.notFound("user not found");
   }
   const task = await assignTaskService(data);
   return res
@@ -36,9 +33,7 @@ export async function assignTask(req: Request, res: Response) {
 export async function updateTaskStatus(req: Request, res: Response) {
   const task = await updateTaskStatusService(req.body);
   if (!task) {
-    return res
-      .status(404)
-      .json({ success: false, message: "task not found" });
+    throw ApiError.notFound("task not found");
   }
   return res
     .status(200)
