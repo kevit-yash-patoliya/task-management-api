@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from "express";
+import express, { NextFunction, type Request, type Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import logger from "./utils/logger.js";
 import { requestLogger } from "./middleware/request.logger.js";
 import { globalErrorHandler } from "./middleware/error.handler.js";
+import { ApiError } from "./utils/api.error.js";
 
 // Load environments
 dotenv.config();
@@ -31,6 +32,11 @@ app.get("/", (req: Request, res: Response) => {
 
 // routes
 app.use("/api", appRoutes);
+
+// Not found handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new ApiError(404,"Not Found"))
+});
 
 // Global Error Handler
 app.use(globalErrorHandler);
