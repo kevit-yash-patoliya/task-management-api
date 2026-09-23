@@ -35,7 +35,7 @@ app.use("/api", appRoutes);
 
 // Not found handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  next(new ApiError(404,"Not Found"))
+  next(ApiError.notFound("Route Not Found"))
 });
 
 // Global Error Handler
